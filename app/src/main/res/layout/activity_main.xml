@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/child">
+
+        <TextView
+            android:id="@+id/latTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Latitude: "/>
+
+        <TextView
+            android:id="@+id/lonTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/latTextView"
+            android:text="Longitude: "/>
+
+        <Button
+            android:id="@+id/clearBtn"
+            android:layout_width="74dp"
+            android:layout_height="43dp"
+            android:layout_marginLeft="300dp"
+            android:drawableBottom="@drawable/refresh" />
+
+        <EditText
+            android:id="@+id/name"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/lonTextView"
+            android:layout_marginTop="10dp"
+            android:ems="10"
+            android:gravity="center"
+            android:hint="Name in English"
+            android:inputType="textPersonName" />
+
+        <EditText
+            android:id="@+id/b_name"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/lonTextView"
+            android:layout_marginLeft="210dp"
+            android:layout_marginTop="10dp"
+            android:ems="10"
+            android:gravity="center"
+            android:hint="Name in Bangla"
+            android:inputType="textPersonName" />
+
+        <EditText
+            android:id="@+id/qualifications"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/name"
+            android:layout_marginTop="3dp"
+            android:ems="10"
+            android:gravity="center"
+            android:hint="Qualifications in English"
+            android:inputType="text" />
+
+        <EditText
+            android:id="@+id/b_qualifications"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/b_name"
+            android:layout_marginLeft="210dp"
+            android:layout_marginTop="3dp"
+            android:ems="10"
+            android:gravity="center"
+            android:hint="Qualifications in Bangla"
+            android:inputType="text" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:hint="Designation in English"
+            android:ems="10"
+            android:layout_below="@+id/b_qualifications"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/designation"
+            android:gravity="center"/>
+
+        <EditText
+            android:id="@+id/b_designation"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:hint="Designation in Bangla"
+            android:ems="10"
+            android:layout_below="@+id/designation"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"/>
+
+        <EditText
+            android:id="@+id/expertise"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:hint="Expertise in English"
+            android:ems="10"
+            android:layout_below="@+id/b_designation"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"/>
+
+        <EditText
+            android:id="@+id/b_expertise"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:hint="Expertise in Bangla"
+            android:ems="10"
+            android:layout_below="@+id/expertise"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"/>
+
+        <EditText
+            android:id="@+id/chamber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/b_expertise"
+            android:ems="10"
+            android:gravity="center"
+            android:hint="Chamber in English"
+            android:inputType="textPersonName" />
+
+        <EditText
+            android:id="@+id/b_chamber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/chamber"
+            android:layout_centerHorizontal="true"
+            android:ems="10"
+            android:gravity="center"
+            android:hint="Chamber in Bangla"
+            android:inputType="textPersonName" />
+
+        <EditText
+            android:id="@+id/other_chamber"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:hint="Other_Chamber in English"
+            android:ems="10"
+            android:layout_below="@+id/b_chamber"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"/>
+
+        <EditText
+            android:id="@+id/b_other_chamber"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:hint="Other_Chamber in Bangla"
+            android:ems="10"
+            android:layout_below="@+id/other_chamber"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"/>
+
+        <EditText
+            android:id="@+id/address"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:hint="Address in English"
+            android:ems="10"
+            android:layout_below="@+id/b_other_chamber"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"/>
+
+        <EditText
+            android:id="@+id/b_address"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:hint="Address in Bangla"
+            android:ems="10"
+            android:layout_below="@+id/address"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"/>
+
+        <EditText
+            android:id="@+id/phone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:hint="Mobile No"
+            android:ems="10"
+            android:layout_below="@+id/b_address"
+            android:gravity="center"/>
+        <EditText
+            android:id="@+id/visiting_hours_start"
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:hint="visiting Hours Start"
+            android:ems="10"
+            android:layout_below="@+id/phone"
+            android:gravity="center"/>
+
+        <TextView
+            android:id="@+id/to"
+            android:layout_width="20dp"
+            android:layout_height="40dp"
+            android:layout_below="@+id/phone"
+            android:layout_marginLeft="185dp"
+            android:ems="10"
+            android:gravity="center"
+            android:hint="To"
+            android:inputType="number" />
+
+        <EditText
+            android:id="@+id/visiting_hours_end"
+            android:layout_width="190dp"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:hint="visiting Hours End"
+            android:ems="10"
+            android:layout_below="@+id/phone"
+            android:layout_marginLeft="210dp"
+            android:gravity="center"/>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/wekend"
+            android:hint="Saturday To Friday"
+            android:textAlignment="center"
+            android:layout_below="@+id/visiting_hours_start"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/CameraBtn"
+            android:layout_below="@+id/wekend"
+            android:layout_marginLeft="150dp"
+            android:drawableBottom="@drawable/camera"/>
+
+        <ImageView
+            android:id="@+id/picture"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_below="@+id/CameraBtn" />
+
+        <Button
+            android:id="@+id/getLocationBtn"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/picture"
+            android:layout_marginTop="40dp"
+            android:text="Get Location"/>
+        <Button
+            android:text="Submit Data"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/picture"
+            android:layout_marginLeft="210dp"
+            android:layout_marginTop="40dp"
+            android:id="@+id/button" />
+
+
+
+    </RelativeLayout>
+
+
+</ScrollView>
