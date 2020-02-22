@@ -6,18 +6,25 @@ import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.location.LocationManager;
+import android.media.MediaScannerConnection;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Looper;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -41,7 +48,24 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.EntityUtils;
+
 import java.io.ByteArrayOutputStream;
+import java.io.Console;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -64,6 +88,8 @@ public class MainActivity extends AppCompatActivity{
     private Bitmap bitmap;
     String strImage;
     TimePickerDialog timePickerDialog;
+    private static final String IMAGE_DIRECTORY = "/demonuts_upload_camera";
+    String path;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,25 +135,96 @@ public class MainActivity extends AppCompatActivity{
         visiting_hours_start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                timePickerDialog = new TimePickerDialog(MainActivity.this, new TimePickerDialog.OnTimeSetListener() {
+                /*timePickerDialog = new TimePickerDialog(MainActivity.this, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                         visiting_hours_start.setText(hourOfDay+":"+minute);
                     }
+                },12,0,false);
+                timePickerDialog.show();*/
+
+                //////////////
+                timePickerDialog = new TimePickerDialog(MainActivity.this, new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        // TODO Auto-generated method stub
+                        int hour = hourOfDay;
+                        int minutes = minute;
+                        String timeSet = "";
+                        if (hour > 12) {
+                            hour -= 12;
+                            timeSet = "PM";
+                        } else if (hour == 0) {
+                            hour += 12;
+                            timeSet = "AM";
+                        } else if (hour == 12){
+                            timeSet = "PM";
+                        }else{
+                            timeSet = "AM";
+                        }
+
+                        String min = "";
+                        if (minutes < 10)
+                            min = "0" + minutes ;
+                        else
+                            min = String.valueOf(minutes);
+
+                        String mTime = new StringBuilder().append(hour).append(':')
+                                .append(min ).append(" ").append(timeSet).toString();
+                        visiting_hours_start.setText(mTime);
+                    }
                 },0,0,false);
                 timePickerDialog.show();
+
+                ///////////////
             }
         });
         visiting_hours_end.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                timePickerDialog = new TimePickerDialog(MainActivity.this, new TimePickerDialog.OnTimeSetListener() {
+               /* timePickerDialog = new TimePickerDialog(MainActivity.this, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                         visiting_hours_end.setText(hourOfDay+":"+minute);
                     }
                 },0,0,false);
+                timePickerDialog.show();*/
+
+               ////////////////
+                timePickerDialog = new TimePickerDialog(MainActivity.this, new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        // TODO Auto-generated method stub
+                        int hour = hourOfDay;
+                        int minutes = minute;
+                        String timeSet = "";
+                        if (hour > 12) {
+                            hour -= 12;
+                            timeSet = "PM";
+                        } else if (hour == 0) {
+                            hour += 12;
+                            timeSet = "AM";
+                        } else if (hour == 12){
+                            timeSet = "PM";
+                        }else{
+                            timeSet = "AM";
+                        }
+
+                        String min = "";
+                        if (minutes < 10)
+                            min = "0" + minutes ;
+                        else
+                            min = String.valueOf(minutes);
+
+                        String mTime = new StringBuilder().append(hour).append(':')
+                                .append(min ).append(" ").append(timeSet).toString();
+                        visiting_hours_end.setText(mTime);
+                    }
+                },0,0,false);
                 timePickerDialog.show();
+
+
+                ///////////////
             }
         });
 
@@ -137,6 +234,7 @@ public class MainActivity extends AppCompatActivity{
         cameraBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //captureImage();
                 Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
                     startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
@@ -179,7 +277,7 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 String  strLat, strLong, strName, strBName, strQualifications, strBQualifications, strDesignation,strBDesignation, strExpertise, strBExpertise,
-                strChamber, strBChamber, strOtherChamber,strBOtherChamber, strAddress, strBAddress, strPhone, strVisitingHourStart, strVisitingHourEnd, strWekend;
+                strChamber, strBChamber, strOtherChamber,strBOtherChamber, strAddress, strBAddress, strPhone, strVisitingHourStart, strVisitingHourEnd, strWekend, strImaage;
 
                 strName = name.getText().toString();
                 strBName = b_name.getText().toString();
@@ -202,70 +300,99 @@ public class MainActivity extends AppCompatActivity{
 
                 strLat = latTextView.getText().toString();
                 strLong = lonTextView.getText().toString();
-                sendToServer(strLat,strLong,strName,strBName,strQualifications,strBQualifications,strDesignation,strBDesignation,strExpertise,strBExpertise,strChamber,strBChamber,strOtherChamber,strBOtherChamber,strAddress,strBAddress,strPhone,strVisitingHourStart,strVisitingHourEnd,strWekend);
+                //upload();
 
+                strImage = path;
+
+                sendToServer(strLat,strLong,strName,strBName,strQualifications,strBQualifications,strDesignation,strBDesignation,strExpertise,strBExpertise,strChamber,strBChamber,strOtherChamber,strBOtherChamber,strAddress,strBAddress,strPhone,strVisitingHourStart,strVisitingHourEnd,strWekend,strImage);
+               // System.out.println(ba1);
                 //camera
-                uploadImage();
+               // uploadImage();
+
             }
         });
     }
 
-    private void uploadImage() {
-         StringRequest imageStrRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                Toast.makeText(MainActivity.this, "Image Upload", Toast.LENGTH_SHORT).show();
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(MainActivity.this, "Image Uploading fail", Toast.LENGTH_SHORT).show();
-            }
-        }){
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                String image = imageToString(bitmap);
-                Map<String, String> map = new HashMap<>();
-                map.put("image", image);
+ /*   private void upload() {
 
-                return map;
-            }
-        };
-        rq.add(imageStrRequest);
-    }
+        Bitmap bm = BitmapFactory.decodeFile(mCurrentPhotoPath);
+        if(bm!=null){
+            ByteArrayOutputStream bao = new ByteArrayOutputStream();
+            bm.compress(Bitmap.CompressFormat.JPEG, 100, bao);
+            byte[] ba = bao.toByteArray();
+            strImage = Base64.encodeToString(ba,Base64.DEFAULT);
+        }
 
+        // Upload image to server
+       // new uploadToServer().execute();
+    }*/
 
-    private String imageToString(Bitmap bitmap) {
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG,100,byteArrayOutputStream);
-        byte[] imgBytes = byteArrayOutputStream.toByteArray();
-        return (Base64.encodeToString(imgBytes,Base64.DEFAULT));
-    }
-    //camera
-
-
+  /*  private void captureImage() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        // Ensure that there's a camera activity to handle the intent
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+           startActivityForResult(takePictureIntent, 100);
+        }
+    }*/
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK && data != null) {
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
             picture.setImageBitmap(imageBitmap);
+
+            path = saveImage(imageBitmap);
+
+         /*   ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            imageBitmap.compress(Bitmap.CompressFormat.JPEG,100,byteArrayOutputStream);
+            byte[] imgBytes = byteArrayOutputStream.toByteArray();
+            strImage = Base64.encodeToString(imgBytes,Base64.DEFAULT);*/
+
+
         }
     }
 
-    /*@Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_TAKE_PHOTO && resultCode == Activity.RESULT_OK){
-            photo = (Bitmap)data.getExtras().get("data");
-            picture.setImageBitmap(photo);
+    private String saveImage(Bitmap myBitmap) {
+        if(myBitmap != null)
+        {
+            ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+            myBitmap.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
+            byte[] imgBytes = bytes.toByteArray();
+            return(Base64.encodeToString(imgBytes,Base64.DEFAULT));
+        }
+        return null;
+
+       /* File wallpaperDirectory = new File(Environment.getExternalStorageDirectory() + IMAGE_DIRECTORY);
+        // have the object build the directory structure, if needed.
+        if (!wallpaperDirectory.exists()) {
+            wallpaperDirectory.mkdirs();
         }
 
-    }*/
+        try {
+            File f = new File(wallpaperDirectory, Calendar.getInstance()
+                    .getTimeInMillis() + ".jpeg");
+            f.createNewFile();
+            FileOutputStream fo = new FileOutputStream(f);
+            fo.write(bytes.toByteArray());
+            MediaScannerConnection.scanFile(this,
+                    new String[]{f.getPath()},
+                    new String[]{"image/jpeg"}, null);
+            fo.close();
+            Log.d("TAG", "File Saved::--->" + f.getAbsolutePath());
+
+            return f.getAbsolutePath();
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
+        return "";*/
+    }
+
+
+
    //camera end
 
-    private void sendToServer(final String strLat, final String strLong, final String strName, final String strBName, final String strQualifications, final String strBQualifications, final String strDesignation, final String strBDesignation, final String strExpertise, final String strBExpertise, final String strChamber, final String strBChamber, final String strOtherChamber, final String strBOtherChamber, final String strAddress, final String strBAddress, final String strPhone, final String strVisitingHourStart, final String strVisitingHourEnd, final String strWekend) {
+    private void sendToServer(final String strLat, final String strLong, final String strName, final String strBName, final String strQualifications, final String strBQualifications, final String strDesignation, final String strBDesignation, final String strExpertise, final String strBExpertise, final String strChamber, final String strBChamber, final String strOtherChamber, final String strBOtherChamber, final String strAddress, final String strBAddress, final String strPhone, final String strVisitingHourStart, final String strVisitingHourEnd, final String strWekend, final String strImage) {
         StringRequest uploadData = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -304,7 +431,7 @@ public class MainActivity extends AppCompatActivity{
                 map.put("visiting_hours_start",strVisitingHourStart);
                 map.put("visiting_hours_end",strVisitingHourEnd);
                 map.put("weekdays",strWekend);
-                //map.put("image", strImage);
+                map.put("image", strImage);
 
                 return map;
 
