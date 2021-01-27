@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.Hospital">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:id="@+id/child">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/update"
+                android:layout_width="129dp"
+                android:layout_height="45dp"
+                android:hint="UPDATE"
+                android:layout_gravity="center"
+                android:layout_marginLeft="20dp"
+                android:textColorHint="#000"
+                android:textSize="18dp" />
+            <Button
+                android:id="@+id/clearBtn"
+                android:layout_width="74dp"
+                android:layout_height="45dp"
+                android:layout_marginLeft="150dp"
+                android:drawableBottom="@drawable/refresh" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <EditText
+                android:id="@+id/hospitalNameEng"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/lonTextView"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:hint="Hospital Name in English"
+                android:inputType="textPersonName" />
+
+            <EditText
+                android:id="@+id/hospitalNameBang"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/lonTextView"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:hint="Hospital Name in  Bangla"
+                android:inputType="textPersonName" />
+
+
+            <EditText
+                android:id="@+id/branchName"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:hint="Branch Name"
+                android:ems="10"
+                android:layout_below="@+id/b_designation"
+                android:layout_centerHorizontal="true"
+                android:gravity="center"/>
+
+            <EditText
+                android:id="@+id/districtName"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:hint="District Name"
+                android:ems="10"
+                android:layout_below="@+id/expertise"
+                android:layout_centerHorizontal="true"
+                android:gravity="center"/>
+
+            <EditText
+                android:id="@+id/searchArea"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/b_expertise"
+                android:ems="10"
+                android:gravity="center"
+                android:hint="Search an Area"
+                android:inputType="textPersonName" />
+
+
+
+            <EditText
+                android:id="@+id/hospitalAddressEng"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:hint="Hospital Address in English"
+                android:ems="10"
+                android:layout_below="@+id/b_other_chamber"
+                android:layout_centerHorizontal="true"
+                android:gravity="center"/>
+
+            <EditText
+                android:id="@+id/hospitalAddressBang"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:hint="Hospital Address in Bangla"
+                android:ems="10"
+                android:layout_below="@+id/address"
+                android:layout_centerHorizontal="true"
+                android:gravity="center"/>
+
+            <EditText
+                android:id="@+id/receptionPhoneNo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:hint="Reception Mobile No"
+                android:ems="10"
+                android:layout_below="@+id/b_address"
+                android:gravity="center"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <ImageButton
+                    android:id="@+id/getLocation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/add_location"
+                    android:layout_weight="1"/>
+                <TextView
+                    android:id="@+id/latitude"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="latitude"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"/>
+                <TextView
+                    android:id="@+id/longitude"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="longitude"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Services"
+                    android:textColor="#000"
+                    android:textSize="24dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginStart="10dp"/>
+                <LinearLayout
+                    android:id="@+id/serviceLayoutList"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                </LinearLayout>
+                <Button
+                    android:id="@+id/button_service_add"
+                    android:background="@drawable/round_primary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:text="Add"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="15dp"
+                    android:textColor="#fff"
+                    android:textAllCaps="false"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:drawableRight="@drawable/add">
+                </Button>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Test Facility"
+                    android:textColor="#000"
+                    android:textSize="24dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginStart="10dp"/>
+                <LinearLayout
+                    android:id="@+id/testLayoutList"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                </LinearLayout>
+                <Button
+                    android:id="@+id/button_test_add"
+                    android:background="@drawable/round_primary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:text="Add"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="15dp"
+                    android:textColor="#fff"
+                    android:textAllCaps="false"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:drawableRight="@drawable/add">
+                </Button>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Surgery"
+                    android:textColor="#000"
+                    android:textSize="24dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginStart="10dp"/>
+                <LinearLayout
+                    android:id="@+id/surgeryLayoutList"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                </LinearLayout>
+                <Button
+                    android:id="@+id/button_surgery_add"
+                    android:background="@drawable/round_primary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:text="Add"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="15dp"
+                    android:textColor="#fff"
+                    android:textAllCaps="false"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:drawableRight="@drawable/add">
+                </Button>
+            </LinearLayout>
+            <Button
+                android:id="@+id/camera"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/wekend"
+                android:layout_marginLeft="150dp"
+                android:drawableBottom="@drawable/camera"/>
+            <ImageView
+                android:id="@+id/picture"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:layout_below="@+id/CameraBtn"
+                android:layout_marginBottom="10dp"/>
+
+
+
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+    </FrameLayout>
+</ScrollView>
